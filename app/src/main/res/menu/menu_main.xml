@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RecyclerFragment">
+
+    <item
+        android:id="@+id/action_symbols_filter"
+        android:orderInCategory="100"
+        android:icon="@drawable/filter_symb"
+        android:title="@string/action_symbols_filter"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_rating_filter"
+        android:orderInCategory="100"
+        android:icon="@drawable/filter_rating"
+        android:title="@string/action_nums_filter"
+        app:showAsAction="always"/>
+
+</menu>

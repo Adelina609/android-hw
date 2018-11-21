@@ -38,9 +38,7 @@ public class FilmUtils {
         return list;
     }
 
-
-
-    public static List<Films> sortByRating(){
+    public static Observable<Films> sortByRating(){
         Observable<Films> filmsObservable = Observable.from(list);
         filmsObservable
                 .take(12)
@@ -51,35 +49,33 @@ public class FilmUtils {
                     public Integer call(Films film1, Films film2) {
                         return new RatingComparator().compare(film1, film2);
                     }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Films>>() {
-                    @Override
-                    public void call(List<Films> films) {
-                        list = films;
-                    }
-                });
-        return list;
+                }).observeOn(AndroidSchedulers.mainThread());
+        return filmsObservable;
     }
 
-    public static List<Films> sortByNames(){
+    //film name + its length
+    static Func1<Films, Films> func1 = new Func1<Films, Films>() {
+        @Override
+        public Films call(Films films) {
+            films.setName(films.getName() + films.getName().length());
+            return films;
+        }
+    };
+
+    public static Observable<Films> sortByNames(){
         Observable<Films> filmsObservable = Observable.from(list);
-        filmsObservable.subscribeOn(Schedulers.io())
+        filmsObservable
+                .take(12)
+                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
+                .map(func1)
                 .toSortedList(new Func2<Films, Films, Integer>() {
                     @Override
                     public Integer call(Films films, Films films2) {
                         return new RatingComparator().compare(films, films2);
                     }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Films>>() {
-                    @Override
-                    public void call(List<Films> films) {
-                        list = films;
-                    }
-                });
-        return list;
+                })
+                .observeOn(AndroidSchedulers.mainThread());
+        return filmsObservable;
     }
-
-
-
 }

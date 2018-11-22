@@ -39,18 +39,16 @@ public class FilmUtils {
     }
 
     public static Observable<Films> sortByRating(){
-        Observable<Films> filmsObservable = Observable.from(list);
-        filmsObservable
+        return new Observable
+                .from(list)
                 .take(12)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
                 .toSortedList(new Func2<Films, Films, Integer>() {
                     @Override
                     public Integer call(Films film1, Films film2) {
                         return new RatingComparator().compare(film1, film2);
                     }
                 }).observeOn(AndroidSchedulers.mainThread());
-        return filmsObservable;
     }
 
     //film name + its length
@@ -63,11 +61,9 @@ public class FilmUtils {
     };
 
     public static Observable<Films> sortByNames(){
-        Observable<Films> filmsObservable = Observable.from(list);
-        filmsObservable
+        return new Observable.from(list)
                 .take(12)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
                 .map(func1)
                 .toSortedList(new Func2<Films, Films, Integer>() {
                     @Override
@@ -76,6 +72,5 @@ public class FilmUtils {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread());
-        return filmsObservable;
     }
 }

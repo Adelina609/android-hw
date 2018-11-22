@@ -58,27 +58,19 @@ public class RecyclerFragment extends Fragment {
 
     private List<Films> onRatingSubscribe(){
         progressBar.setVisibility(ProgressBar.VISIBLE);
-        Observable observable = FilmUtils.sortByRating();
-        observable.subscribe(new Action1<List<Films>>() {
-            @Override
-            public void call(List<Films> films) {
-                list = films;
-            }
-        });
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
+        Observable observable = FilmUtils.sortByRating()
+                .doOnSubscribe(()-> progressBar.setVisibility(ProgressBar.VISIBLE))
+                .doAfterTerminate(()->progressBar.setVisibility(ProgressBar.GONE))
+                .subscribe(list->adapter.updateList(list));
         return list;
     }
 
     private List<Films> onNamesSubscribe(){
         progressBar.setVisibility(ProgressBar.VISIBLE);
-        Observable observable = FilmUtils.sortByNames();
-        observable.subscribe(new Action1<List<Films>>() {
-            @Override
-            public void call(List<Films> films) {
-                list = films;
-            }
-        });
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
+        Observable observable = FilmUtils.sortByNames()
+                .doOnSubscribe(()-> progressBar.setVisibility(ProgressBar.VISIBLE))
+                .doAfterTerminate(()->progressBar.setVisibility(ProgressBar.GONE))
+                .subscribe(list->adapter.updateList(list));
         return list;
     }
     @Override
